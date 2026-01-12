@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<parameters>
+    <type>MYSQL</type>
+    
+    <driver>com.mysql.cj.jdbc.Driver</driver>
+    <url>jdbc:mysql://localhost:3306/offchaindb</url>
+    <username>deploy_user</username>
+    <password>password</password>
+    
+    <isolation>TRANSACTION_READ_COMMITTED</isolation>
+    <terminals>1</terminals> <works>
+        <work>
+            <time>60</time>
+            <rate>3000</rate>
+            <weights>50,50</weights> </work>
+    </works>
+
+    <transactiontypes>
+        <transactiontype>
+            <name>UpdateCFP</name>
+        </transactiontype>
+        <transactiontype>
+            <name>UpdateCo2</name>
+        </transactiontype>
+    </transactiontypes>
+</parameters>

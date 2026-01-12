@@ -7,7 +7,7 @@ if [ $# -ne 3 ] && [ $# -ne 4 ] ; then
 	exit
 fi
 
-#sudo rm -f /var/log/mysql/mylog
+#rm -f /var/log/mysql/mylog
 #sleep 1
 #echo "set global general_log = 0; set global general_log = 1; set global general_log_file = '/var/log/mysql/mylog'; CREATE DATABASE IF NOT EXISTS benchbase;" | mysql -uadmin -ppassword
 
@@ -31,8 +31,8 @@ fi
 if [ $# -eq 3 ]; then
 
 	echo "drop database if exists $1; create database $1" > temp.sql
-	sudo mysql -ppassword < temp.sql
-	#sudo mysql -ppassword benchbase < $2
+	mysql -ppassword < temp.sql
+	#mysql -ppassword benchbase < $2
 
 	java -jar benchbase.jar -b $1 -d /dev/null  -c config/mariadb/$1_$2_$3.xml --create=true
 	ELAPSED_TIME=$(($SECONDS - $START_TIME))
@@ -51,8 +51,8 @@ if [ $# -eq 3 ]; then
 elif [ "$4" == "prepare" ]; then
 
 	echo "drop database if exists $1; create database $1" > temp.sql
-	sudo mysql -ppassword < temp.sql
-	#sudo mysql -ppassword benchbase < $2
+	mysql -ppassword < temp.sql
+	#mysql -ppassword benchbase < $2
 
 	java -jar benchbase.jar -b $1 -d /dev/null -c config/mariadb/$1_$2_$3.xml --create=true --load=true
 	ELAPSED_TIME=$(($SECONDS - $START_TIME))
@@ -60,8 +60,8 @@ elif [ "$4" == "prepare" ]; then
 else
 	if [ "$4" == "create" ]; then
 		echo "drop database if exists $1; create database $1" > temp.sql
-		sudo mysql -ppassword < temp.sql
-		#sudo mysql -ppassword benchbase < $2
+		mysql -ppassword < temp.sql
+		#mysql -ppassword benchbase < $2
 	fi
 	java -jar benchbase.jar $statedb  -b $1 -c config/mariadb/$1_$2_$3.xml --$4=true
 	ELAPSED_TIME=$(($SECONDS - $START_TIME))

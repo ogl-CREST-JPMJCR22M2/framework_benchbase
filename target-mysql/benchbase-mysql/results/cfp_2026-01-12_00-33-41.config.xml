@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<configuration>
+  <isolation>TRANSACTION_READ_COMMITTED</isolation>
+  <terminals>1</terminals>
+  <works>
+    <work>
+      <time>60</time>
+      <rate>3000</rate>
+      <weights>50,50</weights>
+    </work>
+  </works>
+  <transactiontypes>
+    <transactiontype>
+      <name>UpdateCFP</name>
+    </transactiontype>
+    <transactiontype>
+      <name>UpdateCo2</name>
+    </transactiontype>
+  </transactiontypes>
+</configuration>

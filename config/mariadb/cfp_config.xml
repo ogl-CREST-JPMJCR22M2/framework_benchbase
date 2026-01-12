@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<parameters>
+    <type>CFP</type>
+    
+    <driver>com.mysql.cj.jdbc.Driver</driver>
+    <url>jdbc:mysql://localhost:3306/your_db_name</url>
+    <username>root</username>
+    <password>password</password>
+    
+    <isolation>TRANSACTION_READ_COMMITTED</isolation>
+    <terminals>1</terminals> <works>
+        <work>
+            <time>60</time> <rate>unlimited</rate>
+            <weights>50</weights> </work>
+    </works>
+
+    <transactiontypes>
+        <transactiontype>
+            <name>UpdateCFP</name>
+        </transactiontype>
+    </transactiontypes>
+</parameters>

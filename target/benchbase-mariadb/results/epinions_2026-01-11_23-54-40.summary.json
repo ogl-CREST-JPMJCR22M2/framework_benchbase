@@ -1,0 +1,22 @@
+{
+ "scalefactor": "1",
+ "Current Timestamp (milliseconds)": 1768143282582,
+ "Benchmark Type": "epinions",
+ "isolation": "TRANSACTION_SERIALIZABLE",
+ "DBMS Version": "8.0.44-0ubuntu0.22.04.1",
+ "Goodput (requests/second)": 1903.9506149432411,
+ "terminals": "1",
+ "DBMS Type": "MARIADB",
+ "Latency Distribution": {
+  "95th Percentile Latency (microseconds)": 1321,
+  "Maximum Latency (microseconds)": 33730,
+  "Median Latency (microseconds)": 265,
+  "Minimum Latency (microseconds)": 70,
+  "25th Percentile Latency (microseconds)": 149,
+  "90th Percentile Latency (microseconds)": 1157,
+  "99th Percentile Latency (microseconds)": 1699,
+  "75th Percentile Latency (microseconds)": 883,
+  "Average Latency (microseconds)": 521
+ },
+ "Throughput (requests/second)": 1903.946807057243
+}

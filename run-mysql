@@ -1,0 +1,84 @@
+#!/bin/bash
+
+#set -x
+
+# 引数チェック
+if [ $# -ne 3 ] && [ $# -ne 4 ] ; then
+    echo "Usage: $0 <cfp> <mysql|statedb> <querycount, either 1m|10m|100m|1b> (load|create|execute|prepare)"
+    exit 1
+fi
+
+# MySQL用のディレクトリへ移動
+cd target/benchbase-mysql || { echo "Error: target/benchbase-mysql directory not found."; exit 1; }
+
+START_TIME=$SECONDS
+
+# statedbかmysqlかの判定（Benchbase標準にはないオプションかもしれませんが、Ultraverse用として残しています）
+if [ "$2" == 'statedb1' ]; then
+    statedb='-statedb1'
+elif [ "$2" == 'statedb2' ]; then
+    statedb='-statedb2'
+elif [ "$2" == 'mysql' ]; then
+    statedb=''
+else
+    echo "mysql|statedb1|statedb2 should be chosen"
+    echo "Usage: $0 <bench_name> <mysql|statedb1|statedb2> <size> (load|create|execute|prepare)"
+    exit 1
+fi
+
+
+CONFIG_FILE="config/mysql/${1}_${2}_${3}.xml"
+
+if [ ! -f "$CONFIG_FILE" ]; then
+    echo "Error: Config file not found: $CONFIG_FILE"
+    exit 1
+fi
+
+if [ $# -eq 3 ]; then
+    # 引数が3つの場合：Create -> Load -> Execute を一気に実行
+
+    echo "drop database if exists $1; create database $1" > temp.sql
+    mysql -u root -ppassword < temp.sql
+    rm temp.sql
+
+    # 1. Create
+    java -jar benchbase.jar -b $1 -d /dev/null -c $CONFIG_FILE --create=true
+    ELAPSED_TIME=$(($SECONDS - $START_TIME))
+    echo "$1 $2 $3 'create' elapsed: $ELAPSED_TIME seconds ($(date '+%Y-%m-%d %H:%M:%S'))"
+
+    START_TIME=$SECONDS
+    # 2. Load
+    java -jar benchbase.jar -b $1 -d /dev/null -c $CONFIG_FILE --load=true
+    ELAPSED_TIME=$(($SECONDS - $START_TIME))
+    echo "$1 $2 $3 'load' elapsed: $ELAPSED_TIME seconds ($(date '+%Y-%m-%d %H:%M:%S'))"
+
+    START_TIME=$SECONDS
+    # 3. Execute
+    java -jar benchbase.jar $statedb -b $1 -d /dev/null -c $CONFIG_FILE --execute=true
+    ELAPSED_TIME=$(($SECONDS - $START_TIME))
+    echo "$1 $2 $3 'execute' elapsed: $ELAPSED_TIME seconds ($(date '+%Y-%m-%d %H:%M:%S'))"
+
+elif [ "$4" == "prepare" ]; then
+    # prepareの場合：Create -> Load まで実行
+
+    echo "drop database if exists $1; create database $1" > temp.sql
+    mysql -u root -ppassword < temp.sql
+    rm temp.sql
+
+    java -jar benchbase.jar -b $1 -d /dev/null -c $CONFIG_FILE --create=true --load=true
+    ELAPSED_TIME=$(($SECONDS - $START_TIME))
+    echo "$1 $2 $3 '$4' elapsed: $ELAPSED_TIME seconds ($(date '+%Y-%m-%d %H:%M:%S'))"
+
+else
+    # 個別実行（create, load, execute 単体）
+
+    if [ "$4" == "create" ]; then
+        echo "drop database if exists $1; create database $1" > temp.sql
+        mysql -u root -ppassword < temp.sql
+        rm temp.sql
+    fi
+    
+    java -jar benchbase.jar $statedb -b $1 -c $CONFIG_FILE --$4=true
+    ELAPSED_TIME=$(($SECONDS - $START_TIME))
+    echo "$1 $2 $3 '$4' elapsed: $ELAPSED_TIME seconds ($(date '+%Y-%m-%d %H:%M:%S'))"
+fi

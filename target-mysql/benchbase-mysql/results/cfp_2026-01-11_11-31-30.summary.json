@@ -1,0 +1,22 @@
+{
+ "scalefactor": null,
+ "Current Timestamp (milliseconds)": 1768098690990,
+ "Benchmark Type": "cfp",
+ "isolation": "TRANSACTION_READ_COMMITTED",
+ "DBMS Version": "8.0.44-0ubuntu0.22.04.1",
+ "Goodput (requests/second)": 1458.3447280351966,
+ "terminals": "1",
+ "DBMS Type": "MYSQL",
+ "Latency Distribution": {
+  "95th Percentile Latency (microseconds)": 1716,
+  "Maximum Latency (microseconds)": 32097,
+  "Median Latency (microseconds)": 537,
+  "Minimum Latency (microseconds)": 47,
+  "25th Percentile Latency (microseconds)": 110,
+  "90th Percentile Latency (microseconds)": 1511,
+  "99th Percentile Latency (microseconds)": 2202,
+  "75th Percentile Latency (microseconds)": 1177,
+  "Average Latency (microseconds)": 678
+ },
+ "Throughput (requests/second)": 1458.3280614287803
+}

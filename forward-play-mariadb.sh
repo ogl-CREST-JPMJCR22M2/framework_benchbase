@@ -8,6 +8,7 @@ benchmarks=(
 "tatp"
 "seats"
 "tpcc"
+""
 )
 
 epinions=(
