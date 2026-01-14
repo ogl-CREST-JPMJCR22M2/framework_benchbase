@@ -4,12 +4,12 @@
 
 # 引数チェック
 if [ $# -ne 3 ] && [ $# -ne 4 ] ; then
-    echo "Usage: $0 <cfp> <mysql|statedb> <querycount, either 1m|10m|100m|1b> (load|create|execute|prepare)"
+    echo "Usage: $0 <cfp> <mysql|mariadb|statedb> <querycount, either 1m|10m|100m|1b> (load|create|execute|prepare)"
     exit 1
 fi
 
 # MySQL用のディレクトリへ移動
-cd target/benchbase-mysql || { echo "Error: target/benchbase-mysql directory not found."; exit 1; }
+cd target/benchbase-$2 || { echo "Error: target/benchbase-$2 directory not found."; exit 1; }
 
 START_TIME=$SECONDS
 
@@ -20,14 +20,16 @@ elif [ "$2" == 'statedb2' ]; then
     statedb='-statedb2'
 elif [ "$2" == 'mysql' ]; then
     statedb=''
+elif [ "$2" == 'mariadb' ]; then
+    statedb=''
 else
-    echo "mysql|statedb1|statedb2 should be chosen"
-    echo "Usage: $0 <bench_name> <mysql|statedb1|statedb2> <size> (load|create|execute|prepare)"
+    echo "mysql|mariadb|statedb1|statedb2 should be chosen"
+    echo "Usage: $0 <bench_name> <mysql|mariadb|statedb1|statedb2> <size> (load|create|execute|prepare)"
     exit 1
 fi
 
 
-CONFIG_FILE="config/mysql/${1}_${2}_${3}.xml"
+CONFIG_FILE="config/${2}/${1}_${2}_${3}.xml"
 
 if [ ! -f "$CONFIG_FILE" ]; then
     echo "Error: Config file not found: $CONFIG_FILE"
